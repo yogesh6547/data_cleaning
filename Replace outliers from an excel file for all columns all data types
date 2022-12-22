@@ -1,0 +1,61 @@
+import pandas as pd
+import os
+from openpyxl import Workbook
+
+os.listdir()
+
+# Load the Excel sheet into a Pandas dataframe
+paddy_raw= pd.read_excel('paddy_form_1.xlsx')
+df= paddy_raw.copy()
+
+# Identify the object columns
+object_cols = [col for col in df.columns if df[col].dtype == 'object']
+
+# Loop through the object-type columns and try to convert them to datetime columns
+for col in object_cols:
+    try:
+        df[col] = pd.to_datetime(df[col], errors='raise')
+        # To ensure that datetimes are timezone unaware
+        df[col] = df[col].dt.tz_localize(None)
+    except ValueError:
+        # Column is not a datetime column
+        pass
+
+# Identify the integer, datetime and decimal columns
+int_cols = [col for col in df.columns if df[col].dtype == 'int64']
+decimal_cols = [col for col in df.columns if df[col].dtype == 'float64']
+datetime_cols = [col for col in df.columns if df[col].dtype == 'datetime64[ns]']
+
+# Replace outliers in the integer columns with the minimum and maximum values of the IQR
+for col in int_cols:
+    q1 = df[col].quantile(0.25)
+    q3 = df[col].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - (1.5 * iqr)
+    upper_bound = q3 + (1.5 * iqr)
+    df[col] = df[col].apply(lambda x: lower_bound if x < lower_bound else x)
+    df[col] = df[col].apply(lambda x: upper_bound if x > upper_bound else x)
+
+# Replace outliers in the decimal columns with the minimum and maximum values of the IQR
+for col in decimal_cols:
+    q1 = df[col].quantile(0.25)
+    q3 = df[col].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - (1.5 * iqr)
+    upper_bound = q3 + (1.5 * iqr)
+    df[col] = df[col].apply(lambda x: lower_bound if x < lower_bound else x)
+    df[col] = df[col].apply(lambda x: upper_bound if x > upper_bound else x)
+    
+# Replace outliers in the datetime columns with the minimum and maximum values of the IQR
+for col in datetime_cols:
+    q1 = df[col].quantile(0.25)
+    q3 = df[col].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - (1.5 * iqr)
+    upper_bound = q3 + (1.5 * iqr)
+    df[col] = df[col].apply(lambda x: lower_bound if x < lower_bound else x)
+    df[col] = df[col].apply(lambda x: upper_bound if x > upper_bound else x) 
+
+
+# Save the cleaned data to a new Excel file
+df.to_excel("cleaned_data_auto_2.xlsx", index=False)
