@@ -1,0 +1,287 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 10 17:48:41 2023
+
+@author: Yogesh
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jan 10 13:24:04 2023
+
+@author: Yogesh
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Oct  7 10:53:11 2022
+
+@author: Yogesh
+"""
+
+from selenium import webdriver   
+import time 
+from datetime import date, datetime
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+# Importing the pywin32 module
+import win32com.client
+import win32api
+
+
+
+# Creating an instance webdriver
+browser = webdriver.Chrome('C:\chromedriver_win32\chromedriver')
+#browser.maximize_window()
+global wait
+wait = WebDriverWait(browser, 10)
+
+###################################
+      
+def run_method():
+    
+    #Maximize chrome
+    #browser.minimize_window()
+    browser.set_window_size(900, 900)
+    
+    # Open a new Tab
+    browser.execute_script("window.open('');")
+    
+    # Switching to new Tab
+    browser.switch_to.window(browser.window_handles[1])
+    
+    username = "yogesh"
+    
+    #Reaching to the login page of Kobotool box
+    browser.get('https://admin.odk-collect.digitalgreen.org/accounts/login/?next=/#/')
+    #time.sleep(3)
+    '''
+    #user name
+    user_name = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_username"]')))
+    user_name.click()
+    user_name.send_keys(username)
+    
+    # Password
+    password = browser.find_elements_by_xpath('//*[@id="id_password"]')
+    password[0].click()
+    password[0].send_keys('yogesh@123')
+    '''
+    # Username
+    user_name = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_username"]')))
+    #user_name = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_username"]'))).click()
+    user_name.click()
+    user_name.send_keys(username)
+    
+    # Password
+    #password = browser.find_element_by_xpath('//*[@id="id_password"]')
+    password = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="id_password"]')))
+    password.click()
+    password.send_keys('yogesh@123')
+
+    # click login
+    #login = browser.find_element_by_xpath('/html/body/div/form/input[2]')
+    login = wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div/form/input[2]')))
+    login.click()
+    
+    #Menu Open
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div/div[2]/header/div/button/i'))).click()
+    time.sleep(2)    
+
+    #Deployed list
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div/div/div[2]/div[1]/aside/div/div/div[2]'))).click()
+    time.sleep(2)
+
+    #Click the form "Video Tracker"
+    wait.until(EC.presence_of_element_located((By.XPATH, '//*[@class="sidebar-asset-name" and text()="Video & Capacity Building Tracker"]'))).click()
+    time.sleep(2)
+    
+    #Click the setting tab
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div[1]/a[5]'))).click()
+    
+    time.sleep(2)
+    #Click the media tab
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[2]/div[2]/div[2]/a[2]'))).click()
+    
+    time.sleep(2)
+    # Switch to the iframe containing the elements
+    iframe = browser.find_element_by_css_selector("iframe[src='https://backend.odk-collect.digitalgreen.org/yogesh/forms/aAr7arYe5BQefg3qDqFzPM/form_settings']")
+    print("2......")
+    browser.switch_to.frame(iframe)
+    print("3......")
+    time.sleep(2)
+    
+    #delete the first c2.csv
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div/div/ul/li[1]/a[2]'))).click()
+    time.sleep(1)
+    print("4......")
+    #delete the first c1.csv
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div/div/ul/li[1]/a[2]'))).click()
+    time.sleep(1)
+    print("5......")
+    #Click the Add Document Button
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div/div/button'))).click()
+    time.sleep(1) 
+    print("6......")                                                    
+    #upload new updated c1.csv form
+    wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_media"]'))).send_keys("C://Users//Yogesh//Box//A_DG_Yogesh//Projects//India Video Data//Kobotool Box//Trails//With CSV//with CSV choices//4.01//c1.csv")
+    time.sleep(1)
+    print("7......")
+    #Click the upload button
+    wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="media_upload"]/input[2]'))).click()
+    time.sleep(1)
+    print("8......")
+    
+    #Click the Add Document Button
+    wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div/div/button'))).click()
+    #Click the new updated c1.csv form
+    wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_media"]'))).send_keys("C://Users//Yogesh//Box//A_DG_Yogesh//Projects//India Video Data//Kobotool Box//Trails//With CSV//with CSV choices//4.01//c2.csv")
+    time.sleep(1)
+    print("9......")
+    #Click the upload button
+    wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="media_upload"]/input[2]'))).click()
+    time.sleep(1)
+    print("10......")
+    
+    browser.switch_to.default_content()
+    print("11......")
+
+    # Closing new_url tab
+    browser.close()
+    
+    # Switching to old tab
+    browser.switch_to.window(browser.window_handles[0])
+    
+    #pyautogui.hotkey('win', 'd')
+    
+    print("Chrome Okay")
+    
+    
+def excel_refresh():
+    #Delete c1_csv
+    c1_csv = r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c1.csv"
+    win32api.DeleteFile(c1_csv)
+
+    #Delete c2_csv
+    c2_csv = r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c2.csv"
+    win32api.DeleteFile(c2_csv)
+    
+    #Delete c3_csv
+    c2_csv = r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c3.csv"
+    win32api.DeleteFile(c2_csv)
+
+    # Opening Excel software using the win32com
+    File = win32com.client.Dispatch("Excel.Application")
+
+    # Optional line to show the Excel software
+    #File.Interactive = True
+    File.Visible = False
+
+    # Opening your workbook c1_excel
+    Workbook = File.Workbooks.open(r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c1_excel.xlsx")
+
+    # Refeshing all the shests
+    time.sleep(3)
+    Workbook.RefreshAll()
+    
+    time.sleep(5)
+
+    # Saving the Workbook
+    Workbook.Save()
+    
+    #saving as c1_csv
+    Workbook.SaveAs(r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c1.csv", 24)
+    
+    Workbook.Close(SaveChanges=True)
+    
+    # Opening 2nd workbook c2_excel
+    Workbook = File.Workbooks.open(r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c2_excel.xlsx")
+
+    # Refeshing all the shests
+    time.sleep(3)
+    Workbook.RefreshAll()
+    
+    time.sleep(5)
+
+    # Saving the Workbook
+    Workbook.Save()
+    
+    #saving as c3_excel as it is not compressed properly
+    Workbook.SaveAs(r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c3.csv", 24)
+    
+    Workbook.Close(SaveChanges=True)
+    time.sleep(1)
+    
+    # Opening c3_csv
+    c2_csv_2 = File.Workbooks.open(r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c3.csv")
+    
+    #saving c3_csv as c2_csv to compress it 
+    c2_csv_2.SaveAs(r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\with CSV choices\4.01\c2.csv", 24)
+    c2_csv_2.Close(SaveChanges=True)
+    
+    # Closing the Excel File
+    File.Quit()
+    
+    del File
+    #time.sleep(5)
+    
+    print("excel okay")
+    
+    
+    
+    
+  
+    # Opening Excel software using the win32com
+    File = win32com.client.Dispatch("Excel.Application")
+
+    # Optional line to show the Excel software
+    #File.Interactive = True
+    File.Visible = False
+
+    # Opening your workbook
+    Workbook = File.Workbooks.open(r"C:\Users\Yogesh\Box\A_DG_Yogesh\Projects\India Video Data\Kobotool Box\Trails\With CSV\Form-2.82.xlsx")
+
+    # Refeshing all the shests
+    time.sleep(3)
+    Workbook.RefreshAll()
+    
+    time.sleep(5)
+
+    # Saving the Workbook
+    Workbook.Save()
+    
+    Workbook.Close(SaveChanges=True)
+    
+    #time.sleep(10)
+    
+    #Workbook.Close()
+    #File.DisplayAlerts = True
+  
+    # Closing the Excel File
+    File.Quit()
+    
+    del File
+    #time.sleep(5)
+    print("excel okay")
+while True:
+    try:
+        excel_refresh()
+        run_method()
+        today = date.today()
+        time_ = date
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print("Form Updated last till: ", today, " : ", current_time)
+        time.sleep(200)
+    except Exception as e: 
+        print(e)
+        today = date.today()
+        time_ = date
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print("Oops!! Something went wrong!",today, " : ", current_time)
+        #run_method()
+        #excel_refresh()
+        time.sleep(200)
+        
