@@ -1,19 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Jan 10 17:48:41 2023
-
-@author: Yogesh
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jan 10 13:24:04 2023
-
-@author: Yogesh
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Fri Oct  7 10:53:11 2022
 
 @author: Yogesh
@@ -52,22 +38,12 @@ def run_method():
     # Switching to new Tab
     browser.switch_to.window(browser.window_handles[1])
     
-    username = "yogesh"
+    username = "@@@@"
     
     #Reaching to the login page of Kobotool box
-    browser.get('https://admin.odk-collect.digitalgreen.org/accounts/login/?next=/#/')
+    browser.get('https://admin.odk-collect.com/accounts/login/?next=/#/')
     #time.sleep(3)
-    '''
-    #user name
-    user_name = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_username"]')))
-    user_name.click()
-    user_name.send_keys(username)
-    
-    # Password
-    password = browser.find_elements_by_xpath('//*[@id="id_password"]')
-    password[0].click()
-    password[0].send_keys('yogesh@123')
-    '''
+ 
     # Username
     user_name = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_username"]')))
     #user_name = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="id_username"]'))).click()
@@ -78,7 +54,7 @@ def run_method():
     #password = browser.find_element_by_xpath('//*[@id="id_password"]')
     password = wait.until(EC.presence_of_element_located((By.XPATH,'//*[@id="id_password"]')))
     password.click()
-    password.send_keys('yogesh@123')
+    password.send_keys('@@@@@@')
 
     # click login
     #login = browser.find_element_by_xpath('/html/body/div/form/input[2]')
